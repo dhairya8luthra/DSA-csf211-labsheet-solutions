@@ -51,7 +51,7 @@ int main()
         }
     }
 
-    sum[k] += carry + '0'; // Place this line inside the loop
+    sum[k] += carry + '0';
 
     int head = 0;
     while (sum[head] == '0')
