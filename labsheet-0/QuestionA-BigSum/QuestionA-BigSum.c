@@ -26,19 +26,32 @@ int main()
 
     int k = i + 1;
     int l = k;
-    while (j >= 0)
+    while (j >= 0 || i >= 0)
     {
-        digit = carry + (num1[i] - '0') + (num2[j] - '0');
-        carry = digit / 10;
-        digit %= 10;
+        if (j >= 0)
+        {
+            digit = carry + (num1[i] - '0') + (num2[j] - '0');
+            carry = digit / 10;
+            digit %= 10;
 
-        sum[k] = digit + '0';
-        k--;
-        i--;
-        j--;
+            sum[k] = digit + '0';
+            k--;
+            i--;
+            j--;
+        }
+        else
+        {
+            digit = carry + num1[i] - '0';
+            carry = digit / 10;
+            digit %= 10;
+
+            sum[k] = digit + '0';
+            k--;
+            i--;
+        }
     }
 
-    sum[k] += carry + '0';
+    sum[k] += carry + '0'; // Place this line inside the loop
 
     int head = 0;
     while (sum[head] == '0')
