@@ -52,6 +52,7 @@ int main()
     }
     else
     {
+        head = head + 1;
         for (; head <= l; head++)
         {
             printf("%c", sum[head]);
