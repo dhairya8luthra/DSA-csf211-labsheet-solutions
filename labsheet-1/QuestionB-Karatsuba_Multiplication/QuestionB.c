@@ -1,58 +1,79 @@
-#include <iostream>
-#include <string>
-#include <cmath>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-using namespace std;
-
-string addStrings(const string &num1, const string &num2)
+// Function to add two strings representing numbers
+char *addStrings(const char *num1, const char *num2)
 {
-    string result;
+    int len1 = strlen(num1);
+    int len2 = strlen(num2);
+    int maxLen = (len1 > len2) ? len1 : len2;
+
+    char *result = (char *)malloc((maxLen + 2) * sizeof(char));
+    result[maxLen + 1] = '\0';
+
     int carry = 0;
+    int i, j, k;
 
-    for (int i = num1.size() - 1; i >= 0; i--)
+    for (i = len1 - 1, j = len2 - 1, k = maxLen; i >= 0 || j >= 0 || carry > 0; i--, j--, k--)
     {
-        int sum = (num1[i] - '0') + (num2[i] - '0') + carry;
-        result = to_string(sum % 10) + result;
+        int digit1 = (i >= 0) ? (num1[i] - '0') : 0;
+        int digit2 = (j >= 0) ? (num2[j] - '0') : 0;
+
+        int sum = digit1 + digit2 + carry;
+        result[k] = '0' + (sum % 10);
         carry = sum / 10;
-    }
-
-    if (carry > 0)
-    {
-        result = to_string(carry) + result;
     }
 
     return result;
 }
 
-string karatsubaMultiply(const string &x, const string &y)
+// Function to multiply two strings representing numbers using Karatsuba algorithm
+char *karatsubaMultiply(const char *x, const char *y)
 {
-    int n = max(x.size(), y.size());
+    int n = strlen(x);
 
     // Base case: if n is 1, compute the product and return
     if (n == 1)
     {
-        return to_string((x[0] - '0') * (y[0] - '0'));
+        char *result = (char *)malloc(2 * sizeof(char));
+        snprintf(result, 2, "%d", (x[0] - '0') * (y[0] - '0'));
+        return result;
     }
 
     // Split the input numbers into halves
-    string a = x.substr(0, n / 2);
-    string b = x.substr(n / 2);
-    string c = y.substr(0, n / 2);
-    string d = y.substr(n / 2);
+    int half = n / 2;
+    const char *a = x;
+    const char *b = x + half;
+    const char *c = y;
+    const char *d = y + half;
 
     // Recursive steps
-    string p = addStrings(a, b);
-    string q = addStrings(c, d);
+    char *p = addStrings(a, b);
+    char *q = addStrings(c, d);
 
-    string ac = karatsubaMultiply(a, c);
-    string bd = karatsubaMultiply(b, d);
-    string pq = karatsubaMultiply(p, q);
+    char *ac = karatsubaMultiply(a, c);
+    char *bd = karatsubaMultiply(b, d);
+    char *pq = karatsubaMultiply(p, q);
 
-    string adbe = addStrings(pq, "-" + ac);
-    adbe = addStrings(adbe, "-" + bd);
+    // Calculate adbe
+    char *adbe = addStrings(pq, "-");
+    adbe = addStrings(adbe, ac);
+    adbe = addStrings(adbe, "-");
+    adbe = addStrings(adbe, bd);
 
     // Combine the results using the Karatsuba formula
-    string result = ac + string(2 * (n - n / 2), '0') + adbe + string(n / 2, '0') + bd;
+    char *result = addStrings(ac, "0");
+    result = addStrings(result, adbe);
+    result = addStrings(result, "0");
+    result = addStrings(result, bd);
+
+    free(p);
+    free(q);
+    free(ac);
+    free(bd);
+    free(pq);
+    free(adbe);
 
     return result;
 }
@@ -60,12 +81,14 @@ string karatsubaMultiply(const string &x, const string &y)
 int main()
 {
     // Input
-    string num1, num2;
-    cin >> num1 >> num2;
+    char num1[1000], num2[1000];
+    scanf("%s %s", num1, num2);
 
     // Output
-    string result = karatsubaMultiply(num1, num2);
-    cout << (result[0] == '-' ? result.substr(1) : result) << endl;
+    char *result = karatsubaMultiply(num1, num2);
+    printf("%s\n", result);
+
+    free(result);
 
     return 0;
 }
