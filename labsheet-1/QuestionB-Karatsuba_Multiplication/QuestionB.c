@@ -1,15 +1,15 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
+#define MAX_DIGITS 1000
+
 // Function to add two strings representing numbers
-char *addStrings(const char *num1, const char *num2)
+void addStrings(const char *num1, const char *num2, char result[])
 {
     int len1 = strlen(num1);
     int len2 = strlen(num2);
     int maxLen = (len1 > len2) ? len1 : len2;
 
-    char *result = (char *)malloc((maxLen + 2) * sizeof(char));
     result[maxLen + 1] = '\0';
 
     int carry = 0;
@@ -24,21 +24,18 @@ char *addStrings(const char *num1, const char *num2)
         result[k] = '0' + (sum % 10);
         carry = sum / 10;
     }
-
-    return result;
 }
 
 // Function to multiply two strings representing numbers using Karatsuba algorithm
-char *karatsubaMultiply(const char *x, const char *y)
+void karatsubaMultiply(const char *x, const char *y, char result[])
 {
     int n = strlen(x);
 
     // Base case: if n is 1, compute the product and return
     if (n == 1)
     {
-        char *result = (char *)malloc(2 * sizeof(char));
         snprintf(result, 2, "%d", (x[0] - '0') * (y[0] - '0'));
-        return result;
+        return;
     }
 
     // Split the input numbers into halves
@@ -49,46 +46,37 @@ char *karatsubaMultiply(const char *x, const char *y)
     const char *d = y + half;
 
     // Recursive steps
-    char *p = addStrings(a, b);
-    char *q = addStrings(c, d);
+    char p[MAX_DIGITS], q[MAX_DIGITS], ac[MAX_DIGITS], bd[MAX_DIGITS], pq[MAX_DIGITS], adbe[MAX_DIGITS];
 
-    char *ac = karatsubaMultiply(a, c);
-    char *bd = karatsubaMultiply(b, d);
-    char *pq = karatsubaMultiply(p, q);
+    addStrings(a, b, p);
+    addStrings(c, d, q);
+
+    karatsubaMultiply(a, c, ac);
+    karatsubaMultiply(b, d, bd);
+    karatsubaMultiply(p, q, pq);
 
     // Calculate adbe
-    char *adbe = addStrings(pq, "-");
-    adbe = addStrings(adbe, ac);
-    adbe = addStrings(adbe, "-");
-    adbe = addStrings(adbe, bd);
+    addStrings(pq, "-", adbe);
+    addStrings(adbe, ac, adbe);
+    addStrings(adbe, "-", bd, adbe);
 
     // Combine the results using the Karatsuba formula
-    char *result = addStrings(ac, "0");
-    result = addStrings(result, adbe);
-    result = addStrings(result, "0");
-    result = addStrings(result, bd);
-
-    free(p);
-    free(q);
-    free(ac);
-    free(bd);
-    free(pq);
-    free(adbe);
-
-    return result;
+    addStrings(ac, "0", result);
+    addStrings(result, adbe, result);
+    addStrings(result, "0", result);
+    addStrings(result, bd, result);
 }
 
 int main()
 {
     // Input
-    char num1[1000], num2[1000];
+    char num1[MAX_DIGITS], num2[MAX_DIGITS];
     scanf("%s %s", num1, num2);
 
     // Output
-    char *result = karatsubaMultiply(num1, num2);
+    char result[2 * MAX_DIGITS];
+    karatsubaMultiply(num1, num2, result);
     printf("%s\n", result);
-
-    free(result);
 
     return 0;
 }
