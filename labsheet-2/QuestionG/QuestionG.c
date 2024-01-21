@@ -5,7 +5,7 @@ long long maxSubArraySum(int arr[], int size)
 {
     long long maxEndingHere = arr[0];
     long long maxSoFar = arr[0];
-
+    // kadane's algorithm
     for (int i = 1; i < size; i++)
     {
         maxEndingHere = (arr[i] > maxEndingHere + arr[i]) ? arr[i] : maxEndingHere + arr[i];
