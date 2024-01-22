@@ -15,5 +15,6 @@ int main()
 
     while (spiral != dim * dim)
     {
+        if ()
     }
 }
