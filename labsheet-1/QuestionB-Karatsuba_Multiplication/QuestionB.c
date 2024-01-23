@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <string.h>
 
@@ -51,14 +52,13 @@ void karatsubaMultiply(const char *x, const char *y, char result[])
     addStrings(a, b, p);
     addStrings(c, d, q);
 
-    karatsubaMultiply(a, c, ac);
-    karatsubaMultiply(b, d, bd);
+    karatsubaMultiply(b, d, ac); // Use 'y' for the second half
+    karatsubaMultiply(a, c, bd);
     karatsubaMultiply(p, q, pq);
 
     // Calculate adbe
-    addStrings(pq, "-", adbe);
-    addStrings(adbe, ac, adbe);
-    addStrings(adbe, "-", bd, adbe);
+    addStrings(pq, ac, adbe);
+    addStrings(adbe, bd, adbe);
 
     // Combine the results using the Karatsuba formula
     addStrings(ac, "0", result);
