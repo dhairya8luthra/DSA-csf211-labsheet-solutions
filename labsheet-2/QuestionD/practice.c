@@ -4,11 +4,11 @@ int main()
 {
     int num;
     scanf("%d", &num);
-    int precision = 6;
-    float ans = 0;
     int high = num;
     int low = 0;
     int mid;
+    float ans = 0;
+    int precision = 6;
     while (low <= high)
     {
         mid = low + (high - low) / 2;
@@ -20,25 +20,25 @@ int main()
         }
         if (mid * mid < num)
         {
-            ans = mid;
             low = mid + 1;
+            ans = mid;
         }
         else
         {
             high = mid - 1;
         }
     }
-    // now that we have the integer part we need to find the floart part of the number;
+    // now we have the integer part of the number lets find the float part
     float increment = 0.1;
     for (int i = 0; i < precision; i++)
     {
-        while (ans * ans < num)
+        while (ans * ans <= num)
         {
             ans += increment;
         }
         ans -= increment;
         increment /= 10;
     }
-    printf("%0.6f", ans);
+    printf("%.6f", ans);
     return 0;
 }
