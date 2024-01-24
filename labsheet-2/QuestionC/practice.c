@@ -11,48 +11,47 @@ int main()
     }
     int high = l - 1;
     int low = 0;
-    int found = 0;
     int mid;
+    int found = 0;
     while (low <= high)
     {
         mid = low + (high - low) / 2;
+        if (arr[low] == arr[high] && arr[low] != 7)
+        {
+            break;
+        }
         if (arr[mid] == 7)
         {
             printf("%d", mid);
             found = 1;
             return 0;
         }
-        if (arr[low] == arr[high] && arr[low] != 7)
+        // check if the right side is sorted
+        if (arr[high] > arr[mid])
         {
-            break;
-        }
-        if (arr[mid] < arr[high])
-        {
-            // right side is sorted
-            // check for 7 is it there
+            // right side is sorted now check if 7 is here
             if (arr[mid] < 7 && arr[high] >= 7)
             {
-                // 7 is here
+                // 7 is heare bring the search space right
                 low = mid + 1;
             }
             else
             {
-                // 7 is not here
+                // 7 is not here search left side
                 high = mid - 1;
             }
         }
-        else if (arr[mid] > arr[low])
+        else if (arr[low] < arr[mid])
         {
-            // left side is sorted
-            // checking for 7
+            // 7 is on the left side check if 7 is here
             if (arr[mid] > 7 && arr[low] <= 7)
             {
-                // 7 is here
+                // 7 is here bring ssearch space to the left
                 high = mid - 1;
             }
             else
             {
-                // 7 is not here
+                // 7 is not here search in the right side
                 low = mid + 1;
             }
         }
