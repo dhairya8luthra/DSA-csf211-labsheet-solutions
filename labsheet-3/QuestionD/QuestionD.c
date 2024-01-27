@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+// with bonus
 int isVowel(char suspect)
 {
     return (suspect == 'a' || suspect == 'e' || suspect == 'i' || suspect == 'o' || suspect == 'u');
