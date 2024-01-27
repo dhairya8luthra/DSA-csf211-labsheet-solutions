@@ -12,28 +12,29 @@ int main()
 
     while (top <= bottom && left <= right)
     {
-        // Traverse from left to right (top row)
+        // Traverse from left to right
         for (int i = left; i <= right; i++)
         {
             matrix[top][i] = num++;
         }
         top++;
 
-        // Traverse from top to bottom (right column)
+        // Traverse from top to bottom
         for (int i = top; i <= bottom; i++)
         {
             matrix[i][right] = num++;
         }
         right--;
 
-        // Traverse from right to left (bottom row)
+        // Traverse from right to left
         for (int i = right; i >= left; i--)
         {
             matrix[bottom][i] = num++;
         }
         bottom--;
 
-        // Traverse from bottom to top (left column)
+        // Traverse from bottom to top
+
         for (int i = bottom; i >= top; i--)
         {
             matrix[i][left] = num++;
