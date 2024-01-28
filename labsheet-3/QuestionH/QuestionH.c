@@ -17,8 +17,8 @@ int maxSatisfiedClients(int deals[], int n, int k)
     {
         // Remove the leftmost deal from the current set
         currentSatisfied ^= deals[i - k];
-        a // Add the current deal to the set
-            currentSatisfied |= deals[i];
+        // Add the current deal to the set
+        currentSatisfied |= deals[i];
 
         // Update the maximum satisfied clients
         maxSatisfied = maxSatisfied > __builtin_popcountll(currentSatisfied) ? maxSatisfied : __builtin_popcountll(currentSatisfied);

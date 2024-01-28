@@ -18,13 +18,13 @@ int main()
     {
         if (!(map[(int)word[i] - 97]))
         {
-            map[(int)word[i] - 97] = 1;
+            map[(int)word[i] - 97] = i;
             endofcurrent = i;
             curr_l = endofcurrent - current + 1;
         }
         else
         {
-            current = i + 1;
+            current = map[(int)word[i] - 97] + 1;
             if (curr_l > longest)
             {
                 longest = curr_l;
