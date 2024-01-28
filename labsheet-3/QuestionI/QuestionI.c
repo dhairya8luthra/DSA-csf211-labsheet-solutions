@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 
 #define MOD 1000000007
 
