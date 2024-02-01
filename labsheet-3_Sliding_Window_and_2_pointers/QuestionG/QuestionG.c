@@ -14,30 +14,33 @@ int main()
     int maximum_weight = 0;
     int left_pointer = 0;
     int right_pointer = length - 1;
-    int left_sum = 0;
-    int right_sum = 0;
+    int left_sum = arr[left_pointer];
+    int right_sum = arr[right_pointer];
     // approach set 2 pointers one from left andd one from right
     // and add weights to left sum and right sum
     // when they are equal set them to max weight
     // until they cross each other
+
     while (left_pointer < right_pointer)
     {
         // adding to right sum and left sum
-        left_sum += arr[left_pointer];
-        right_sum += arr[right_pointer];
         if (left_sum > right_sum)
         {
             right_pointer--;
+            right_sum += arr[right_pointer];
         }
         if (right_sum > left_sum)
         {
             left_pointer++;
+            left_sum += arr[left_pointer];
         }
         if (left_sum == right_sum)
         {
             maximum_weight = right_sum;
             left_pointer++;
             right_pointer--;
+            right_sum += arr[right_pointer];
+            left_sum += arr[left_pointer];
         }
     }
     printf("%d", maximum_weight);
