@@ -9,7 +9,7 @@ int main()
     int longest = 0;
     int current = 0;
     int endofcurrent = 0;
-    int curr_l = 0;
+    int current_l = 0;
     int map[26] = {0};
     for (int i = 0; i < n; i++)
     {
@@ -24,10 +24,10 @@ int main()
             map[(int)word[i] - 'a'] = i + 1;
             endofcurrent = i;
         }
-        curr_l = endofcurrent - current + 1;
-        if (curr_l > longest)
+        current_l = endofcurrent - current + 1;
+        if (current_l > longest)
         {
-            longest = curr_l;
+            longest = current_l;
         }
     }
     printf("%d", longest);
