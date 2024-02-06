@@ -5,19 +5,18 @@ int main()
     int n;
     scanf("%d", &n);
     char sentence[n];
-    scanf("% [^\n]", sentence);
+    scanf("% [^\n]s", sentence);
     //
-    int pointer = n - 1;
     int result_pointer = 0;
-    char result[n];
+    int pointer = n - 1;
     char reversed_words[n];
+    char result[n];
     //
     for (int i = 0; i < n; i++)
     {
         if (sentence[i] != ' ')
         {
-            reversed_words[pointer] = sentence[i];
-            pointer--;
+            reversed_words[pointer--] = sentence[i];
         }
         else
         {
@@ -33,12 +32,11 @@ int main()
             pointer = n - 1;
         }
     }
-    reversed_words[pointer] = '\0';
     while (pointer < n - 1)
     {
         result[result_pointer++] = reversed_words[++pointer];
     }
-    result[result_pointer++] = '\0';
+    result[result_pointer] = '\0';
     printf("%s", result);
     return 0;
 }
