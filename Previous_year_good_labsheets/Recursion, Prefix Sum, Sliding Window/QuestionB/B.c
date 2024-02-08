@@ -6,5 +6,6 @@ int main()
     int n;
     scanf("%d", &n);
     // approach
-    // we will have one pointer
+    // we will have one pointe
+
 }
