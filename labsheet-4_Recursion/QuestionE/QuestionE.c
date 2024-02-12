@@ -47,7 +47,7 @@ int isValid(int probable_salary[], int n, int sum_of_digits, int lower_bound, in
 // Recursive function to find the number of valid salaries
 int find_valid_salary(int possible_salary[], int n, int index, int sum_of_digits, int lower_bound, int upper_bound, int count)
 {
-    // Base case when we have checked all elements of the array
+    // Base case: when we have checked all elements of the array
     if (index == n)
     {
         return count + isValid(possible_salary, n, sum_of_digits, lower_bound, upper_bound);
@@ -56,12 +56,11 @@ int find_valid_salary(int possible_salary[], int n, int index, int sum_of_digits
     // Check if the current digit is unknown (denoted by -1)
     if (possible_salary[index] == -1)
     {
-        int start = (index == 0) ? 1 : 0;
-        // check from 1-9 if first digit else check from 0 -9
-        for (int i = start; i < 10; i++)
+        // Permutate from 0 - 9 and call recursion
+        for (int i = 0; i < 10; i++)
         {
             possible_salary[index] = i;
-            count += find_valid_salary(possible_salary, n, index + 1, sum_of_digits, lower_bound, upper_bound, count);
+            count = find_valid_salary(possible_salary, n, index + 1, sum_of_digits, lower_bound, upper_bound, count);
         }
         // Reset the digit for backtracking
         possible_salary[index] = -1;
@@ -69,7 +68,7 @@ int find_valid_salary(int possible_salary[], int n, int index, int sum_of_digits
     else
     {
         // If the digit is known, proceed to the next index
-        count += find_valid_salary(possible_salary, n, index + 1, sum_of_digits, lower_bound, upper_bound, count);
+        count = find_valid_salary(possible_salary, n, index + 1, sum_of_digits, lower_bound, upper_bound, count);
     }
 
     return count;
