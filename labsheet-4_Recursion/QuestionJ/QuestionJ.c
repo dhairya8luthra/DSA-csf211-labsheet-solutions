@@ -1,39 +1,59 @@
 #include <stdio.h>
+
 int main()
 {
-    int n, m;
-    scanf("%d %d\n", &n, &m);
-    char arr[n][m];
-    for (int i = 0; i < n; i++)
+    int row, column;
+    scanf("%d", &row);
+    scanf("%d", &column);
+
+    char board[row][column]; // Assuming the maximum column number is 10
+
+    // Input board values
+    for (int i = 0; i < row; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            scanf("%c", &arr[i][j]);
-        }
-        scanf("\n");
+        scanf("%s", board[i]);
     }
-    for (int j = 0; j < m; j++)
+
+    // Applying fall_column function to each column
+    for (int i = 0; i < column; i++)
     {
-        for (int i = n - 2; i >= 0; i--)
+        int last_obstacle_index = -1;
+
+        // Find the last obstacle index
+        for (int pointer = row - 1; pointer >= 0; pointer--)
         {
-            if (arr[i][j] == '*')
+            if (board[pointer][i] == 'o')
             {
-                for (int k = i; k < n && arr[k + 1][j] == '.'; k++)
+                last_obstacle_index = pointer;
+                break;
+            }
+        }
+
+        // Perform the falling process
+        for (int pointer = row - 1; pointer >= 0; pointer--)
+        {
+            if (board[pointer][i] == '*')
+            {
+                // Move the coin downwards
+                if (last_obstacle_index != -1 && pointer < last_obstacle_index - 1)
                 {
-                    arr[k + 1][j] = '*';
-                    arr[k][j] = '.';
+                    board[last_obstacle_index - 1][i] = '*';
+                    board[pointer][i] = '.';
+                    last_obstacle_index--;
                 }
             }
         }
     }
 
-    for (int i = 0; i < n; i++)
+    // Print the updated board
+    for (int i = 0; i < row; i++)
     {
-        for (int j = 0; j < m; j++)
+        for (int j = 0; j < column; j++)
         {
-            printf("%c", arr[i][j]);
+            printf("%c", board[i][j]);
         }
         printf("\n");
     }
+
     return 0;
 }
