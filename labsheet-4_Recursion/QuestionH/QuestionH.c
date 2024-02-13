@@ -1,46 +1,34 @@
 #include <stdio.h>
-
-int *findCombination(int n, int kira_wins, int nom_wins, int result_arr[])
-{
-    // base case: when kira_wins and nom_wins are over
-    // or when index reaches n
-    if (index == n)
-    {
-        int consWins = countConsecutiveWins();
-        int noOfKiraWinsinLeft = KiraWinsInLeft();
-        if (consWins < minConsWins)
-        {
-            if (noOfKiraWinsinLeft < minKiraWinsinLeft)
-            {
-                return result_arr;
-            }
-        }
-        else
-        {
-            return [0];
-        }
-        else
-        {
-            result_arr[index] = 1;
-            findCombination();
-            result_arr[index] = 0;
-            findCombination();
-        }
-    }
-}
+#include <string.h>
 
 int main()
 {
-    // taking input
-    int n, kira_wins, nom_wins;
-    scanf("%d", &n);
-    scanf("%d", &kira_wins);
-    scanf("%d", &nom_wins);
-    //
-    // approach no need to simulate strings we take 1 for kira win and 0 for nom win
-    // backtrack for all combinations
-    // keep in account the minimums
-    int result_arr[n] = {-1};
-    int index = 0;
-    result_arr = findCombination(n, kira_wins, nom_wins, result_arr, index);
+    int n, i, j, a, b, k;
+    scanf("%d%d%d", &n, &a, &b);
+    char t[100] = {0};
+    if (a % (b + 1) == 0)
+    {
+        k = a / (b + 1);
+    }
+    else
+    {
+        k = a / (b + 1) + 1;
+    }
+    for (i = 0; i < n; i += (k + 1))
+    {
+        for (j = i; j < i + k && j < n; j++)
+        {
+            t[j] = 'K';
+        }
+        if (i + k < n)
+        {
+            t[i + k] = 'O';
+        }
+    }
+    for (i = 0; i < n; i++)
+    {
+        printf("%c", t[i]);
+    }
+
+    return 0;
 }
