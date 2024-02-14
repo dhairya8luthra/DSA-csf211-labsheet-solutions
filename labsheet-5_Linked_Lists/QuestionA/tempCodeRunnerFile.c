@@ -38,21 +38,19 @@ void AddtoLinkedList(int val)
     struct node *ptr = head;
     while (ptr != NULL)
     {
-        ptr->data;
-        if (ptr->data > 9)
+        ptr->data += val;
+        if (ptr->data > 9 && ptr->next != NULL)
         {
             ptr->data %= 10;
-            if (ptr->next == NULL)
-            {
-                struct node *nextNode = (struct node *)malloc(sizeof(struct node));
-                nextNode->data = 1;
-                nextNode->next = NULL;
-                ptr->next = nextNode;
-            }
-            else
-            {
-                ptr->next->data++;
-            }
+            ptr->next->data += 1;
+        }
+        else if (ptr->data > 9 && ptr->next == NULL)
+        {
+            ptr->data %= 10;
+            struct node *nextNode = (struct node *)malloc(sizeof(struct node));
+            nextNode->data = 1;
+            nextNode->next = NULL;
+            ptr->next = nextNode;
         }
         ptr = ptr->next;
     }
