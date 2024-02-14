@@ -29,33 +29,27 @@ void createLinkedList(int val)
     }
 }
 
-void AddtoLinkedList(int val)
+void AddtoLinkedList(int val, struct node *pointer)
 {
     if (head == NULL)
     {
         return;
     }
-    struct node *ptr = head;
-    while (ptr != NULL)
+    pointer->data += val;
+    if (pointer->data > 9)
     {
-        ptr->data;
-        if (ptr->data > 9)
+        pointer->data %= 10;
+        if (pointer->next == NULL)
         {
-            ptr->data %= 10;
-            if (ptr->next == NULL)
-            {
-                struct node *nextNode = (struct node *)malloc(sizeof(struct node));
-                nextNode->data = 1;
-                nextNode->next = NULL;
-                ptr->next = nextNode;
-            }
-            else
-            {
-                ptr->next->data++;
-            }
+            createLinkedList(1);
         }
-        ptr = ptr->next;
+        else
+        {
+            pointer->next->data++;
+        }
     }
+
+    return;
 }
 
 void display()
@@ -87,16 +81,18 @@ int main()
     // finding smaller and bigger
     int small = (first <= second) ? first : second;
     int *smallArr = (first <= second) ? firstArr : secondArr;
-    int big = (first >= second) ? first : second;
-    int *bigArr = (first >= second) ? firstArr : secondArr;
+    int big = (second >= first) ? second : first;
+    int *bigArr = (second >= first) ? secondArr : firstArr;
     // create a linked list
     for (int i = 0; i < big; i++)
     {
         createLinkedList(bigArr[i]);
     }
-    for (int i = 0; i < small; i++)
+    struct node *pointer = head;
+    for (int i = 0; i < small && pointer != NULL; i++)
     {
-        AddtoLinkedList(smallArr[i]);
+        AddtoLinkedList(smallArr[i], pointer);
+        pointer = pointer->next;
     }
     display();
 
