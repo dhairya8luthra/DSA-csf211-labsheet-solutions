@@ -37,7 +37,7 @@ void display(struct node *head)
     struct node *start = head;
     while (start != NULL)
     {
-        printf("%d ", start->data);
+        printf("%d", start->data);
         start = start->next;
     }
 }
@@ -59,16 +59,17 @@ int main()
     {
         int val;
         scanf("%d", &val);
-        AddNode(val, &head_small);
+        AddNode(val, head_small);
     }
-
+    display(head_small);
     // bigger one
     for (int i = 0; i < m; i++)
     {
         int val;
         scanf("%d", &val);
-        AddNode(val, &head_big);
+        AddNode(val, head_big);
     }
+    display(head_big);
     // time to merge
     struct node *BigPointer = head_big;
     struct node *SmallPointer = head_small;
@@ -78,9 +79,8 @@ int main()
     zeroNode->data = -10;
     zeroNode->next = head_big;
     BigPointer = zeroNode;
-    head_big = zeroNode;
     // merging the 2 Linked Lists
-    for (int i = 0; i < m + n + 1; i++)
+    for (int i = 0; i < m + 1; i++)
     {
         if (SmallPointer == NULL)
         {
@@ -97,9 +97,7 @@ int main()
             BigPointer = BigPointer->next;
         }
     }
-    // remove zero node
-    head_big = head_big->next;
-    free(zeroNode);
+    // while displaying display from the head of big
     display(head_big);
     return 0;
 }
