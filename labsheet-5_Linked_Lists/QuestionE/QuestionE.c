@@ -54,7 +54,7 @@ int main()
     struct node *prev = NULL;
     while (no_of_elements_left != 1)
     {
-        for (int i = 0; i < k - 1; i++) // Corrected loop condition
+        for (int i = 0; i < k - 1; i++)
         {
             prev = pointer;
             pointer = pointer->next;
