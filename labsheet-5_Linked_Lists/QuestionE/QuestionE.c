@@ -27,16 +27,6 @@ void AddNode(int val, struct node **head)
     }
 }
 
-void display(struct node *head)
-{
-    struct node *start = head;
-    while (start != NULL)
-    {
-        printf("%d ", start->data);
-        start = start->next;
-    }
-}
-
 int main()
 {
     int n, k;
