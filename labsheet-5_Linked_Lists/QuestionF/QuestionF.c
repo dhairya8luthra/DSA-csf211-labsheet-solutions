@@ -8,7 +8,9 @@ struct node
 };
 
 void removeDuplicates(struct node **head)
+
 {
+    // approach if the curr->next->data is same as curr->data remove curr by changing prev->next to curr->next
     struct node *curr = *head;
     struct node *prev = NULL;
 
