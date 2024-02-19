@@ -45,7 +45,7 @@ void AddtoLinkedList(int val, struct node *pointer)
         }
         else
         {
-            pointer->next->data++;
+            AddtoLinkedList(1, pointer->next);
         }
     }
 
