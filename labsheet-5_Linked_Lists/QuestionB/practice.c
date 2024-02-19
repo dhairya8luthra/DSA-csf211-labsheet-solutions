@@ -5,11 +5,12 @@ struct node
     int data;
     struct node *next;
 };
+
 void AddNode(int val, struct node **head)
 {
     struct node *temp = (struct node *)malloc(sizeof(struct node));
-    temp->next = NULL;
     temp->data = val;
+    temp->next = NULL;
     if (*head == NULL)
     {
         *head = temp;
@@ -24,16 +25,12 @@ void AddNode(int val, struct node **head)
         pointer->next = temp;
     }
 }
-void insertAfterPointer(int val, struct node *pointer)
+void insertAfterPointer(int val, struct node *big_pointer)
 {
-    if (pointer == NULL)
-    {
-        return;
-    }
     struct node *temp = (struct node *)malloc(sizeof(struct node));
     temp->data = val;
-    temp->next = pointer->next;
-    pointer->next = temp;
+    temp->next = big_pointer->next;
+    big_pointer->next = temp;
 }
 void display(struct node *head)
 {
@@ -44,17 +41,14 @@ void display(struct node *head)
         start = start->next;
     }
 }
-
 int main()
 {
+    struct node *head_big = NULL;
+    struct node *head_small = NULL;
     // taking input
     int n, m;
     scanf("%d %d", &n, &m);
-    // declaring two heads
-    struct node *head_big = NULL;
-    struct node *head_small = NULL;
-    // creating two linked lists
-    // smaller one
+    // adding nodes to linked lists
     for (int i = 0; i < n; i++)
     {
         int val;
@@ -67,28 +61,28 @@ int main()
         scanf("%d", &val);
         AddNode(val, &head_big);
     }
-    // traversing through larger one and inserting elements from smaller one wherever we can
-    struct node *zeroNode = (struct node *)malloc(sizeof(struct node));
-    zeroNode->data = -10;
-    zeroNode->next = head_big;
-    head_big = zeroNode;
-    struct node *bigPointer = zeroNode;
-    struct node *smallPointer = head_small;
-    for (int i = 0; i < n + m; i++)
+    // setting up a zero node on big linked list
+    struct node *big_pointer = head_big;
+    struct node *small_pointer = head_small;
+    struct node *zeronode = (struct node *)malloc(sizeof(struct node));
+    zeronode->data = -10;
+    zeronode->next = head_big;
+    head_big = zeronode;
+    for (int i = 0; i < n + m + 1; i++)
     {
-        if (smallPointer == NULL)
+        if (small_pointer == NULL)
         {
             break;
         }
-        if (bigPointer->next->data >= smallPointer->data && bigPointer->data < smallPointer->data)
+        if (big_pointer->next->data >= small_pointer->data && big_pointer->data < small_pointer->data)
         {
-            insertAfterPointer(smallPointer->data, bigPointer);
-            bigPointer = bigPointer->next;
-            smallPointer = smallPointer->next;
+            insertAfterPointer(small_pointer->data, big_pointer);
+            big_pointer = big_pointer->next;
+            small_pointer = small_pointer->next;
         }
         else
         {
-            bigPointer = bigPointer->next;
+            big_pointer = big_pointer->next;
         }
     }
     head_big = head_big->next;
