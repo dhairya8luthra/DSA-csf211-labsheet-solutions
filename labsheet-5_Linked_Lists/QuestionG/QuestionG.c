@@ -39,7 +39,6 @@ int main()
     // taking input
     int n, a, b;
     scanf("%d %d %d", &n, &b, &a);
-    // create 2 linked list
     struct node *head = NULL;
 
     for (int i = 0; i < n; i++)
