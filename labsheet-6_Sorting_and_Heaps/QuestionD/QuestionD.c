@@ -1,75 +1,64 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 void insertion_sort(int arr[], int n)
 {
     for (int i = 1; i < n; i++)
     {
-        int curr = arr[i];
+        int key = arr[i];
         int j = i - 1;
 
-        while (j >= 0 && curr < arr[j])
+        while (j >= 0 && key < arr[j])
         {
             arr[j + 1] = arr[j];
             j--;
         }
 
-        arr[j + 1] = curr;
+        arr[j + 1] = key;
     }
 }
 
-void merge(int arr[], int left, int middle, int right)
+void merge(int arr[], int temp[], int left, int mid, int right)
 {
-    int LeftSize = middle - left + 1;
-    int RightSize = right - middle;
+    int i = left;
+    int j = mid + 1;
+    int k = left;
 
-    int L[LeftSize], R[RightSize];
-
-    for (int i = 0; i < LeftSize; i++)
+    while (i <= mid && j <= right)
     {
-        L[i] = arr[left + i];
-    }
-
-    for (int i = 0; i < RightSize; i++)
-    {
-        R[i] = arr[middle + 1 + i];
-    }
-
-    int LeftPointer = 0;
-    int RightPointer = 0;
-    int arrayPointer = left;
-
-    while (LeftPointer < LeftSize && RightPointer < RightSize)
-    {
-        if (L[LeftPointer] <= R[RightPointer])
+        if (arr[i] <= arr[j])
         {
-            arr[arrayPointer] = L[LeftPointer];
-            LeftPointer++;
+            temp[k] = arr[i];
+            i++;
         }
         else
         {
-            arr[arrayPointer] = R[RightPointer];
-            RightPointer++;
+            temp[k] = arr[j];
+            j++;
         }
-        arrayPointer++;
+        k++;
     }
 
-    while (LeftPointer < LeftSize)
+    while (i <= mid)
     {
-        arr[arrayPointer] = L[LeftPointer];
-        LeftPointer++;
-        arrayPointer++;
+        temp[k] = arr[i];
+        i++;
+        k++;
     }
 
-    while (RightPointer < RightSize)
+    while (j <= right)
     {
-        arr[arrayPointer] = R[RightPointer];
-        RightPointer++;
-        arrayPointer++;
+        temp[k] = arr[j];
+        j++;
+        k++;
+    }
+
+    for (int x = left; x <= right; x++)
+    {
+        arr[x] = temp[x];
     }
 }
 
-void mergeSort(int arr[], int left, int right, int k)
+void merge_sort(int arr[], int temp[], int left, int right, int k)
 {
     if (left < right)
     {
@@ -79,17 +68,18 @@ void mergeSort(int arr[], int left, int right, int k)
         }
         else
         {
-            int middle = left + (right - left) / 2;
-            mergeSort(arr, left, middle, k);
-            mergeSort(arr, middle + 1, right, k);
-            merge(arr, left, middle, right);
+            int mid = (left + right) / 2;
+            merge_sort(arr, temp, left, mid, k);
+            merge_sort(arr, temp, mid + 1, right, k);
+            merge(arr, temp, left, mid, right);
         }
     }
 }
 
 void custom_merge_sort(int arr[], int n, int k)
 {
-    mergeSort(arr, 0, n - 1, k);
+    int temp[n];
+    merge_sort(arr, temp, 0, n - 1, k);
 }
 
 int main()
