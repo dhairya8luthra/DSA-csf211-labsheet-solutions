@@ -4,7 +4,8 @@ struct node
 {
     int data;
     struct node *next;
-} void AddNode(int val, struct node **head)
+};
+void AddNode(int val, struct node **head)
 {
     struct node *new_node = (struct node *)malloc(sizeof(struct node));
     new_node->data = val;
