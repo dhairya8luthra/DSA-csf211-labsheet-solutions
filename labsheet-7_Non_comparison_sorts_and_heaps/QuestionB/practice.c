@@ -46,8 +46,9 @@ void insertion_sort_LL(struct node **head)
             current->next = sorted;
             sorted = current;
         }
-        // Case 2: If the current node is larger than the first node in the sorted list
-        else
+        U
+            // Case 2: If the current node is larger than the first node in the sorted list
+            else
         {
             struct node *temp = sorted;
             while (temp != NULL)
