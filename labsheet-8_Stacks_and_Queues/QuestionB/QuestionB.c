@@ -14,17 +14,6 @@ struct Queue
     int max;
 };
 
-void print_q(struct Queue *queue)
-{
-    struct node *temp = queue->front;
-    while (temp != NULL)
-    {
-        printf("%d ", temp->data);
-        temp = temp->next;
-    }
-    printf("\n");
-}
-
 int dequeue(struct Queue *queue)
 {
     if (queue->front == NULL)
@@ -108,14 +97,14 @@ int main()
     }
     tail_pointer = k;
 
-    printf("%d head_pointer is at %d\n", queue->max, arr[0]);
+    printf("%d ", queue->max);
 
     while (tail_pointer < n)
     {
         int element = dequeue(queue);
         enqueue(queue, arr[tail_pointer]);
         tail_pointer++;
-        printf("%d head_pointer is at %d\n", queue->max, arr[head_pointer]);
+        printf("%d ", queue->max);
         head_pointer++;
     }
 
