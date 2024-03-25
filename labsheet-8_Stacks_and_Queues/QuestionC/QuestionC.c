@@ -1,44 +1,103 @@
 #include <stdio.h>
-#define MOD 1000000007
+#define SIZE 100000
+unsigned int MOD = 1000000007;
 
-long long stack[1000006], top = -1;
+int front = -1;
+int rear = -1;
+int arr[SIZE];
+void enqueue(int x); // push
+void pop();          // removes one element
+int dequeue();       // returns element
+int isEmpty();
 
-long long min(long long a, long long b)
+int min()
 {
-    return (a < b) ? a : b;
+    int min = arr[front];
+    for (int i = front + 1; i <= rear; i++)
+    {
+        if (arr[i] < min)
+        {
+            min = arr[i];
+        }
+    }
+    return min;
+}
+
+void clear_queue()
+{
+    front = -1;
+    rear = -1;
 }
 
 int main()
 {
-    long long n, i, a[1000006], ans = 0;
-
-    scanf("%lld", &n);
-
-    for (i = 0; i < n; i++)
+    int n;
+    scanf("%d", &n);
+    int sum = 0;
+    int arr1[n];
+    for (int i = 0; i < n; i++)
     {
-        scanf("%lld", &a[i]);
+        scanf("%d", &arr1[i]);
     }
 
-    for (i = 0; i < n; i++)
+    for (int w = 1; w <= n; w++)
     {
-        while (top >= 0 && a[stack[top]] > a[i])
+        for (int i = 0; i < w; i++)
         {
-            long long j = stack[top--];
-            long long left = j - (top >= 0 ? stack[top] : -1);
-            long long right = i - j;
-            ans = (ans + (left * right % MOD) * a[j]) % MOD;
+            enqueue(arr1[i]);
         }
-        stack[++top] = i;
+        sum = (sum + min()) % MOD;
+        for (int i = w; i < n; i++)
+        {
+            enqueue(arr1[i]);
+            pop();
+            sum = (sum + min()) % MOD;
+        }
+        clear_queue();
     }
+    printf("%d\n", sum);
 
-    while (top >= 0)
-    {
-        long long j = stack[top--];
-        long long left = j - (top >= 0 ? stack[top] : -1) + 1;
-        long long right = n - j;
-        ans = (ans + (left * right % MOD) * a[j]) % MOD;
-    }
-
-    printf("%lld\n", ans);
     return 0;
+}
+
+void enqueue(int x)
+{
+    if (front < SIZE - 1)
+    {
+        if (front == -1)
+        {
+            front++;
+        }
+        rear++;
+        arr[rear] = x;
+    }
+}
+void pop()
+{
+    if ((front <= rear) && (front != -1))
+    {
+        front++;
+    }
+}
+int dequeue()
+{
+    if (front != -1)
+    {
+        return arr[front];
+    }
+    else
+    {
+        return -1;
+    }
+}
+int isEmpty()
+{
+    if ((front > rear) || (front == -1))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
