@@ -1,11 +1,13 @@
 #include <stdio.h>
+
 #define SIZE 100000
 unsigned int MOD = 1000000007;
-
 int front = -1;
 int rear = -1;
+
 int arr[SIZE];
-void enqueue(int x)
+
+void push(int val)
 {
     if (front < SIZE - 1)
     {
@@ -14,42 +16,22 @@ void enqueue(int x)
             front++;
         }
         rear++;
-        arr[rear] = x;
+        arr[rear] = val;
     }
 }
+
 void pop()
 {
-    if ((front <= rear) && (front != -1))
+    if (front <= rear && front != -1)
     {
         front++;
     }
 }
-int dequeue()
-{
-    if (front != -1)
-    {
-        return arr[front];
-    }
-    else
-    {
-        return -1;
-    }
-}
-int isEmpty()
-{
-    if ((front > rear) || (front == -1))
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
+
 int min()
 {
     int min = arr[front];
-    for (int i = front + 1; i <= rear; i++)
+    for (int i = front; i <= rear; i++)
     {
         if (arr[i] < min)
         {
@@ -58,13 +40,11 @@ int min()
     }
     return min;
 }
-
 void clear_queue()
 {
     front = -1;
     rear = -1;
 }
-
 int main()
 {
     int n;
@@ -75,17 +55,16 @@ int main()
     {
         scanf("%d", &arr1[i]);
     }
-
     for (int w = 1; w <= n; w++)
     {
         for (int i = 0; i < w; i++)
         {
-            enqueue(arr1[i]);
+            push(arr1[i]);
         }
         sum = (sum + min()) % MOD;
         for (int i = w; i < n; i++)
         {
-            enqueue(arr1[i]);
+            push(arr1[i]);
             pop();
             sum = (sum + min()) % MOD;
         }
