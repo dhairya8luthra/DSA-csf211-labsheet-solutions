@@ -1,83 +1,87 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node
+typedef struct TreeNode
 {
-    int info;
-    struct node *left, *right;
-};
+    int value;
+    struct TreeNode *left;
+    struct TreeNode *right;
+} TreeNode;
 
-struct node *createnode(int key)
+// Function to create a new tree node
+TreeNode *createNode(int value)
 {
-    struct node *newnode = (struct node *)malloc(sizeof(struct node));
-    newnode->info = key;
-    newnode->left = NULL;
-    newnode->right = NULL;
-    return (newnode);
+    TreeNode *newNode = (TreeNode *)malloc(sizeof(TreeNode));
+    newNode->value = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
 }
 
-long long sumofdistances(struct node *root, int distance)
+// Function to construct the binary tree from the given array
+TreeNode *constructTree(int arr[], int n)
+{
+    TreeNode **nodes = (TreeNode **)malloc(n * sizeof(TreeNode *));
+    for (int i = 0; i < n; i++)
+    {
+
+        nodes[i] = createNode(arr[i]);
+    }
+
+    TreeNode *root = nodes[0];
+    for (int i = 0; i < n; i++)
+    {
+        if (nodes[i] != NULL && nodes[i]->value != -1)
+        {
+            int leftChildIdx = 2 * i + 1;
+            int rightChildIdx = 2 * i + 2;
+            if (leftChildIdx < n)
+            {
+                nodes[i]->left = nodes[leftChildIdx];
+            }
+            if (rightChildIdx < n)
+            {
+                nodes[i]->right = nodes[rightChildIdx];
+            }
+        }
+    }
+
+    free(nodes);
+    return root;
+}
+
+long long sumofdistances(TreeNode *root, int distance)
 {
     long long sum = 0;
     if (root != NULL)
     {
-        sum += distance; // Adding distance from root to current node
+        if (root->value == -1)
+        {
 
-        // Recursively calculating sum of distances for left and right subtrees
-        sum += sumofdistances(root->left, distance + 1);
-        sum += sumofdistances(root->right, distance + 1);
+            return sum;
+        }
+        sum += distance;
+
+        sum += sumofdistances(root->left, (root->value != -1) ? distance + 1 : distance);
+        sum += sumofdistances(root->right, (root->value != -1) ? distance + 1 : distance);
+        printf("%d ", sum);
     }
     return sum;
 }
-
 int main()
 {
     int n;
     scanf("%d", &n);
-
-    // Reading the tree nodes into an array
-    int *arr = (int *)malloc(n * sizeof(int));
+    int arr[n];
     for (int i = 0; i < n; i++)
     {
         scanf("%d", &arr[i]);
     }
 
-    // Building the binary tree
-    struct node *root = createnode(arr[0]);
-    struct node *current;
-    for (int i = 1; i < n; i++)
-    {
-        current = root;
-        while (1)
-        {
-            if (arr[i] < current->info)
-            {
-                if (current->left == NULL)
-                {
-                    current->left = createnode(arr[i]);
-                    break;
-                }
-                else
-                    current = current->left;
-            }
-            else
-            {
-                if (current->right == NULL)
-                {
-                    current->right = createnode(arr[i]);
-                    break;
-                }
-                else
-                    current = current->right;
-            }
-        }
-    }
+    // Construct the binary tree
+    TreeNode *root = constructTree(arr, n);
 
-    // Calculate and print the sum of distances
     printf("%lld\n", sumofdistances(root, 0));
-
-    // Free dynamically allocated memory
-    free(arr);
 
     return 0;
 }
