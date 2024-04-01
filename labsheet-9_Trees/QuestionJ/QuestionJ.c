@@ -1,72 +1,98 @@
+// Recursive optimized C program to find the diameter of a
+// Binary Tree
 #include <stdio.h>
 #include <stdlib.h>
 
-// Define the structure of a tree node
-typedef struct TreeNode
+// A binary tree node has data, pointer to left child
+// and a pointer to right child
+struct node
 {
     int data;
-    struct TreeNode *left;
-    struct TreeNode *right;
-} TreeNode;
+    struct node *left, *right;
+};
 
-// Function to create a new tree node
-TreeNode *createNode(int data)
-{
-    TreeNode *newNode = (TreeNode *)malloc(sizeof(TreeNode));
-    newNode->data = data;
-    newNode->left = NULL;
-    newNode->right = NULL;
-    return newNode;
-}
+// function to create a new node of tree and returns pointer
+struct node *newNode(int data);
 
-// Function to insert a node into the binary tree
-TreeNode *insert(TreeNode *root, int data)
-{
-    if (root == NULL)
-        return createNode(data);
-    if (data < root->data)
-        root->left = insert(root->left, data);
-    else if (data > root->data)
-        root->right = insert(root->right, data);
-    return root;
-}
+// returns max of two integers
+int max(int a, int b) { return (a > b) ? a : b; }
 
-// Function to find the height of a binary tree
-int height(TreeNode *root)
+// function to Compute height of a tree.
+int height(struct node *node);
+
+// Function to get diameter of a binary tree
+int diameter(struct node *tree)
 {
-    if (root == NULL)
+    // base case where tree is empty
+    if (tree == NULL)
         return 0;
-    int leftHeight = height(root->left);
-    int rightHeight = height(root->right);
-    return 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
+
+    // get the height of left and right sub-trees
+    int lheight = height(tree->left);
+    int rheight = height(tree->right);
+
+    // get the diameter of left and right sub-trees
+    int ldiameter = diameter(tree->left);
+    int rdiameter = diameter(tree->right);
+
+    // Return max of following three
+    // 1) Diameter of left subtree
+    // 2) Diameter of right subtree
+    // 3) Height of left subtree + height of right subtree +
+    // 1
+
+    return max(lheight + rheight + 1,
+               max(ldiameter, rdiameter));
 }
 
-// Function to find the diameter of a binary tree
-int diameter(TreeNode *root)
+// UTILITY FUNCTIONS TO TEST diameter() FUNCTION
+
+//  The function Compute the "height" of a tree. Height is
+//  the number f nodes along the longest path from the root
+//   node down to the farthest leaf node.
+int height(struct node *node)
 {
-    if (root == NULL)
+    // base case tree is empty
+    if (node == NULL)
         return 0;
-    int leftHeight = height(root->left);
-    int rightHeight = height(root->right);
-    int leftDiameter = diameter(root->left);
-    int rightDiameter = diameter(root->right);
-    return (leftHeight + rightHeight + 1 > leftDiameter && leftHeight + rightHeight + 1 > rightDiameter) ? leftHeight + rightHeight + 1 : (leftDiameter > rightDiameter ? leftDiameter : rightDiameter);
+
+    // If tree is not empty then height = 1 + max of left
+    // height and right heights
+    return 1 + max(height(node->left), height(node->right));
 }
 
+// Helper function that allocates a new node with the
+// given data and NULL left and right pointers.
+struct node *newNode(int data)
+{
+    struct node *node = (struct node *)malloc(sizeof(struct node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+
+    return (node);
+}
+
+// Driver Code
 int main()
 {
-    int n;
-    scanf("%d", &n);
-    int *arr = (int *)malloc(n * sizeof(int));
-    for (int i = 0; i < n; i++)
-        scanf("%d", &arr[i]);
 
-    TreeNode *root = NULL;
-    for (int i = 0; i < n; i++)
-        root = insert(root, arr[i]);
+    /* Constructed binary tree is
+              1
+            /   \
+          2      3
+        /  \
+      4     5
+    */
+    struct node *root = newNode(1);
+    root->left = newNode(2);
+    root->right = newNode(3);
+    root->left->left = newNode(4);
+    root->left->right = newNode(5);
 
-    printf("%d\n", diameter(root));
+    // Function Call
+    printf("Diameter of the given binary tree is %d\n",
+           diameter(root));
 
-    free(arr);
     return 0;
 }
